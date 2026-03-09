@@ -567,10 +567,10 @@
     <div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
 
     <script>
-      /* ===== API BASE: localhost -> backend:8000; production (Vercel) -> set your Render URL below ===== */
+      /* ===== API BASE: localhost -> backend:8000; production (Vercel) -> Render backend URL ===== */
       const API_BASE = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
         ? "http://127.0.0.1:8000"
-        : "https://YOUR-RENDER-SERVICE-NAME.onrender.com";
+        : "https://iso9001-backend.onrender.com";
 
       /* ===== CLAUSES BY AUDIT TYPE ===== */
       const CLAUSE_TITLES = {
@@ -894,6 +894,7 @@
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
+          credentials: "omit",
         })
           .then((response) => {
             if (!response.ok) {
@@ -915,7 +916,10 @@
           })
           .catch((error) => {
             console.error("Error:", error);
-            showAlert("Error generating report: " + error.message, "error");
+            const msg = error.message === "Failed to fetch"
+              ? "Cannot reach server (check connection or try again in a minute if the server was idle)."
+              : "Error generating report: " + error.message;
+            showAlert(msg, "error");
           })
           .finally(() => {
             button.innerHTML = originalContent;
