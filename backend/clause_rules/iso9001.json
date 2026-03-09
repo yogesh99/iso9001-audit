@@ -1,0 +1,280 @@
+{
+  "4.1": {
+    "title": "Understanding the organization and its context",
+    "mandatory_checks": [
+      "internal_issues",
+      "external_issues",
+      "monitoring_review"
+    ],
+    "narrative_rules": {
+      "internal_issues": {
+        "yes": "The organization has identified internal issues relevant to its purpose and strategic direction.",
+        "no": "The organization has not adequately identified internal issues relevant to its purpose and strategic direction."
+      },
+      "external_issues": {
+        "yes": "External issues relevant to the organization have been identified.",
+        "partial": "External issues have been identified; however, the identification is not comprehensive."
+      },
+      "monitoring_review": {
+        "yes": "A documented mechanism is established to monitor and review these issues.",
+        "no": "A documented mechanism to monitor and review these issues has not been established."
+      }
+    }
+  },
+
+  "4.2": {
+    "title": "Understanding the needs and expectations of interested parties",
+    "mandatory_checks": ["interested_parties", "requirements_defined"],
+    "narrative_rules": {
+      "interested_parties": {
+        "yes": "Relevant interested parties have been identified.",
+        "no": "Relevant interested parties have not been formally identified."
+      },
+      "requirements_defined": {
+        "yes": "The needs and expectations of interested parties have been determined and are monitored.",
+        "no": "The needs and expectations of interested parties are not fully determined or monitored."
+      }
+    }
+  },
+
+  "4.3": {
+    "title": "Determining the scope of the QMS",
+    "mandatory_checks": ["scope_defined", "documented"],
+    "narrative_rules": {
+      "scope_defined": {
+        "yes": "The scope of the Quality Management System has been defined considering internal and external issues.",
+        "no": "The scope of the Quality Management System has not been adequately defined."
+      },
+      "documented": {
+        "yes": "The scope is documented and maintained as documented information.",
+        "no": "The scope is not adequately documented."
+      }
+    }
+  },
+
+  "4.4": {
+    "title": "Quality Management System and its processes",
+    "mandatory_checks": ["processes_defined", "interactions", "controls"],
+    "narrative_rules": {
+      "processes_defined": {
+        "yes": "The processes needed for the QMS have been identified.",
+        "no": "The processes needed for the QMS have not been fully identified."
+      },
+      "interactions": {
+        "yes": "The sequence and interaction of processes are determined.",
+        "no": "The interaction of processes is not clearly defined."
+      },
+      "controls": {
+        "yes": "Criteria and controls required for effective operation are defined.",
+        "no": "Criteria and controls for effective operation are not adequately defined."
+      }
+    }
+  },
+
+  "5.1": {
+    "title": "Leadership and commitment",
+    "mandatory_checks": ["leadership_commitment"],
+    "narrative_rules": {
+      "leadership_commitment": {
+        "yes": "Top management demonstrates leadership and commitment to the QMS.",
+        "no": "Leadership commitment to the QMS is not adequately demonstrated."
+      }
+    }
+  },
+
+  "5.2": {
+    "title": "Quality policy",
+    "mandatory_checks": ["policy_established", "communicated"],
+    "narrative_rules": {
+      "policy_established": {
+        "yes": "A quality policy has been established and is appropriate to the organization.",
+        "no": "A quality policy has not been adequately established."
+      },
+      "communicated": {
+        "yes": "The quality policy is communicated and understood within the organization.",
+        "no": "The quality policy is not effectively communicated."
+      }
+    }
+  },
+
+  "5.3": {
+    "title": "Organizational roles, responsibilities and authorities",
+    "mandatory_checks": ["roles_defined"],
+    "narrative_rules": {
+      "roles_defined": {
+        "yes": "Roles, responsibilities and authorities are defined and communicated.",
+        "no": "Roles, responsibilities and authorities are not clearly defined."
+      }
+    }
+  },
+
+  "6.1": {
+    "title": "Actions to address risks and opportunities",
+    "mandatory_checks": ["risks_identified", "actions_planned"],
+    "narrative_rules": {
+      "risks_identified": {
+        "yes": "Risks and opportunities have been identified.",
+        "no": "Risks and opportunities have not been adequately identified."
+      },
+      "actions_planned": {
+        "yes": "Actions to address risks and opportunities are planned and implemented.",
+        "no": "Actions to address risks and opportunities are not adequately planned."
+      }
+    }
+  },
+
+  "6.2": {
+    "title": "Quality objectives and planning",
+    "mandatory_checks": ["objectives_defined", "monitored"],
+    "narrative_rules": {
+      "objectives_defined": {
+        "yes": "Quality objectives are established at relevant functions and levels.",
+        "no": "Quality objectives are not adequately established."
+      },
+      "monitored": {
+        "yes": "Quality objectives are monitored and reviewed.",
+        "no": "Quality objectives are not adequately monitored."
+      }
+    }
+  },
+
+  "6.3": {
+    "title": "Planning of changes",
+    "mandatory_checks": ["changes_planned"],
+    "narrative_rules": {
+      "changes_planned": {
+        "yes": "Changes to the QMS are carried out in a planned manner.",
+        "no": "Changes to the QMS are not adequately planned."
+      }
+    }
+  },
+
+  "7.1": {
+    "title": "Resources",
+    "mandatory_checks": ["resources_provided"],
+    "narrative_rules": {
+      "resources_provided": {
+        "yes": "Resources required for the QMS are determined and provided.",
+        "no": "Resources required for the QMS are not adequately provided."
+      }
+    }
+  },
+
+  "7.2": {
+    "title": "Competence",
+    "mandatory_checks": ["competence_defined", "training"],
+    "narrative_rules": {
+      "competence_defined": {
+        "yes": "Competence requirements are defined for personnel.",
+        "no": "Competence requirements are not clearly defined."
+      },
+      "training": {
+        "yes": "Training and evaluation of competence are conducted.",
+        "no": "Training and competence evaluation are not adequately conducted."
+      }
+    }
+  },
+
+  "7.3": {
+    "title": "Awareness",
+    "mandatory_checks": ["awareness"],
+    "narrative_rules": {
+      "awareness": {
+        "yes": "Personnel are aware of the quality policy and objectives.",
+        "no": "Personnel awareness of the quality policy and objectives is inadequate."
+      }
+    }
+  },
+
+  "7.4": {
+    "title": "Communication",
+    "mandatory_checks": ["communication_defined"],
+    "narrative_rules": {
+      "communication_defined": {
+        "yes": "Internal and external communications are determined.",
+        "no": "Communication processes are not adequately defined."
+      }
+    }
+  },
+
+  "7.5": {
+    "title": "Documented information",
+    "mandatory_checks": ["documents_controlled"],
+    "narrative_rules": {
+      "documents_controlled": {
+        "yes": "Documented information is controlled as per requirements.",
+        "no": "Control of documented information is inadequate."
+      }
+    }
+  },
+
+  "8.1": {
+    "title": "Operational planning and control",
+    "mandatory_checks": ["operations_planned"],
+    "narrative_rules": {
+      "operations_planned": {
+        "yes": "Operational processes are planned and controlled.",
+        "no": "Operational planning and control are inadequate."
+      }
+    }
+  },
+
+  "8.7": {
+    "title": "Control of nonconforming outputs",
+    "mandatory_checks": ["nonconformity_control"],
+    "narrative_rules": {
+      "nonconformity_control": {
+        "yes": "Nonconforming outputs are identified and controlled.",
+        "no": "Control of nonconforming outputs is inadequate."
+      }
+    }
+  },
+
+  "9.2": {
+    "title": "Internal audit",
+    "mandatory_checks": ["internal_audit", "follow_up"],
+    "narrative_rules": {
+      "internal_audit": {
+        "yes": "Internal audits are conducted at planned intervals.",
+        "no": "Internal audits are not conducted as planned."
+      },
+      "follow_up": {
+        "yes": "Corrective actions are taken and followed up.",
+        "no": "Follow-up actions from internal audits are inadequate."
+      }
+    }
+  },
+
+  "9.3": {
+    "title": "Management review",
+    "mandatory_checks": ["management_review"],
+    "narrative_rules": {
+      "management_review": {
+        "yes": "Management reviews are conducted at planned intervals.",
+        "no": "Management reviews are not conducted as required."
+      }
+    }
+  },
+
+  "10.2": {
+    "title": "Nonconformity and corrective action",
+    "mandatory_checks": ["corrective_action"],
+    "narrative_rules": {
+      "corrective_action": {
+        "yes": "Corrective actions are implemented and reviewed.",
+        "no": "Corrective actions are not adequately implemented."
+      }
+    }
+  },
+
+  "10.3": {
+    "title": "Continual improvement",
+    "mandatory_checks": ["improvement"],
+    "narrative_rules": {
+      "improvement": {
+        "yes": "Continual improvement of the QMS is demonstrated.",
+        "no": "Continual improvement activities are inadequate."
+      }
+    }
+  }
+}

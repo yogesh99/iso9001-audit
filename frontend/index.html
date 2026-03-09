@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ISO 9001 Audit Automation | Professional Audit Report Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#2563eb" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+      :root {
+        /* Bright primary palette */
+        --primary: #2563eb;
+        --primary-hover: #1d4ed8;
+        --primary-light: #dbeafe;
+        --accent: #f97316;
+
+        /* Status colors */
+        --success: #16a34a;
+        --success-bg: #dcfce7;
+        --warning: #eab308;
+        --warning-bg: #fef9c3;
+        --danger: #dc2626;
+        --danger-bg: #fee2e2;
+
+        /* Map commonly used custom vars */
+        --primary-color: var(--primary);
+        --secondary-color: var(--accent);
+        --success-color: var(--success);
+        --danger-color: var(--danger);
+
+        /* Grays */
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-600: #4b5563;
+        --gray-700: #374151;
+        --gray-800: #1f2933;
+        --gray-900: #111827;
+
+        /* Layout & effects */
+        --shadow-sm: 0 1px 2px rgb(15 23 42 / 0.05);
+        --shadow: 0 4px 12px rgb(15 23 42 / 0.08);
+        --shadow-lg: 0 18px 45px -15px rgb(15 23 42 / 0.18);
+        --radius-sm: 0.5rem;
+        --radius: 0.75rem;
+        --radius-lg: 1rem;
+        --transition: 0.2s ease;
+        --container-max:  min(1200px, 92vw);
+        --touch-min: 44px;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; }
+
+      html {
+        scroll-behavior: smooth;
+        /* Slightly smaller on very small screens, a bit larger on big desktops */
+        font-size: clamp(15px, 0.9vw + 12px, 18px);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html, * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      }
+
+      body {
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background:
+          radial-gradient(circle at top left, #eff6ff 0, transparent 55%),
+          radial-gradient(circle at top right, #fef3c7 0, transparent 55%),
+          linear-gradient(180deg, #f9fafb 0%, #ffffff 60%, #eff6ff 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+        min-height: 100dvh;
+        margin: 0;
+        padding: clamp(12px, 3vw, 24px);
+        padding-bottom: 2rem;
+        color: var(--gray-800);
+        font-size: 1rem;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: clamp(1.25rem, 4vw, 2rem);
+        padding-top: clamp(8px, 2vw, 16px);
+        color: var(--gray-900);
+      }
+
+      .header h1 {
+        font-size: clamp(1.5rem, 4vw, 2.4rem);
+        font-weight: 700;
+        margin: 0 0 0.35em;
+        letter-spacing: -0.02em;
+        color: var(--primary-color);
+      }
+
+      .header h1 i {
+        margin-right: 0.25em;
+        opacity: 0.95;
+        color: var(--accent);
+      }
+
+      .header p {
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        opacity: 0.96;
+        margin: 0;
+        font-weight: 500;
+        color: var(--gray-700);
+      }
+
+      .container {
+        max-width: var(--container-max);
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+        padding: clamp(1rem, 3vw, 1.5rem);
+        border: 1px solid rgba(37, 99, 235, 0.08);
+      }
+
+      .card {
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        background: white;
+        transition: all 0.3s ease;
+      }
+
+      .card:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid var(--gray-100);
+      }
+
+      .card-header i {
+        color: var(--primary-color);
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+      }
+
+      .card-title {
+        font-size: clamp(1.1rem, 0.5vw + 1rem, 1.35rem);
+        font-weight: 600;
+        color: var(--gray-800);
+        margin: 0;
+      }
+
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--gray-700);
+        font-size: clamp(0.9rem, 0.3vw + 0.8rem, 1rem);
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 2px solid var(--gray-200);
+        border-radius: 0.5rem;
+        font-size: clamp(0.95rem, 0.3vw + 0.85rem, 1.05rem);
+        font-family: inherit;
+        transition: all 0.3s ease;
+        background: white;
+      }
+
+      input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+      }
+
+      textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.5rem;
+        font-size: clamp(0.9rem, 0.35vw + 0.85rem, 1.05rem);
+        font-weight: 500;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        line-height: 1;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn-primary {
+        background: var(--primary-color);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: var(--primary-hover);
+      }
+
+      .btn-secondary {
+        background: var(--gray-500);
+        color: white;
+      }
+
+      .btn-success {
+        background: var(--success-color);
+        color: white;
+      }
+
+      .btn-danger {
+        background: var(--danger-color);
+        color: white;
+      }
+
+      .btn-outline {
+        background: transparent;
+        border: 2px solid var(--gray-300);
+        color: var(--gray-700);
+      }
+
+      .btn-outline:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .progress-container {
+        background: var(--gray-100);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .progress-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .progress-title {
+        font-weight: 600;
+        color: var(--gray-700);
+      }
+
+      .progress-stats {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .progress-bar-container {
+        background: var(--gray-200);
+        height: 0.75rem;
+        border-radius: 0.5rem;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--success-color), var(--secondary-color));
+        border-radius: 0.5rem;
+        transition: width 0.5s ease;
+      }
+
+      .controls {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+      }
+
+      .accordion {
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+
+      .accordion-item {
+        border-bottom: 1px solid var(--gray-200);
+      }
+
+      .accordion-item:last-child {
+        border-bottom: none;
+      }
+
+      .accordion-header {
+        padding: 1.25rem;
+        cursor: pointer;
+        background: var(--gray-50);
+        font-weight: 600;
+        font-size: 1.05rem;
+        font-family: inherit;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+        border: none;
+        width: 100%;
+        text-align: left;
+      }
+
+      .accordion-header:hover {
+        background: var(--gray-100);
+      }
+
+      .accordion-header.completed {
+        background: linear-gradient(90deg, #ecfdf5, #f0fdf4);
+        border-left: 4px solid var(--success-color);
+      }
+
+      .accordion-icon {
+        transition: transform 0.3s ease;
+        color: var(--gray-500);
+      }
+
+      .accordion-header.active .accordion-icon {
+        transform: rotate(180deg);
+      }
+
+      .accordion-content {
+        display: none;
+        padding: 1.5rem;
+        background: white;
+      }
+
+      .accordion-content.active {
+        display: block;
+      }
+
+      .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .status-compliant {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .status-minor {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .status-major {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      .clause-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+
+      .alert {
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .alert-success {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+      }
+
+      .alert-error {
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+      }
+
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255,255,255,.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 1.5rem;
+        padding: 0.75rem;
+        font-size: 0.8rem;
+        color: var(--gray-800);
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: var(--radius);
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          padding: 10px;
+        }
+
+        .header h1 {
+          font-size: 2rem;
+        }
+
+        .controls {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+
+        .clause-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <h1><i class="fas fa-clipboard-check"></i> ISO 9001 Audit Automation</h1>
+      <p>Professional Audit Report Generator - Streamline Your Compliance Process</p>
+    </div>
+
+    <div class="container">
+      <!-- Client Information Card -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-building"></i>
+          <h2 class="card-title">Client Information</h2>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="client_name"><i class="fas fa-user"></i> Client Name</label>
+            <input type="text" id="client_name" value="Demo Client" placeholder="Enter client name">
+          </div>
+          <div class="form-group">
+            <label for="audit_type"><i class="fas fa-tasks"></i> Audit Type</label>
+            <select id="audit_type">
+              <option value="Stage 1">Stage 1</option>
+              <option value="Stage 2" selected>Stage 2</option>
+              <option value="Surveillance">Surveillance</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Card -->
+      <div class="progress-container">
+        <div class="progress-header">
+          <div class="progress-title">
+            <i class="fas fa-chart-line"></i> Audit Progress
+          </div>
+          <div class="progress-stats">
+            <span id="progressText">0 / 11 clauses completed</span>
+            <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+          </div>
+        </div>
+        <div class="progress-bar-container">
+          <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Controls Card -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-cogs"></i>
+          <h3 class="card-title">Controls</h3>
+        </div>
+        <div class="controls">
+          <button class="btn btn-outline" onclick="expandAll()">
+            <i class="fas fa-expand-alt"></i> Expand All
+          </button>
+          <button class="btn btn-outline" onclick="collapseAll()">
+            <i class="fas fa-compress-alt"></i> Collapse All
+          </button>
+          <button class="btn btn-success" onclick="saveDraft()">
+            <i class="fas fa-save"></i> Save Draft
+          </button>
+          <button class="btn btn-secondary" onclick="loadDraft()">
+            <i class="fas fa-folder-open"></i> Load Draft
+          </button>
+        </div>
+      </div>
+
+      <!-- ISO Clauses -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-list-check"></i>
+          <h3 class="card-title">ISO 9001 Clauses</h3>
+        </div>
+        <div class="accordion" id="clauses">
+        <!-- Clauses rendered by JS based on audit type -->
+      </div>
+
+      <!-- Generate Report Button -->
+      <div class="card">
+        <div class="form-group">
+          <button class="btn btn-primary" onclick="generateReport()" style="width: 100%; justify-content: center; font-size: 1rem; padding: 1rem;">
+            <i class="fas fa-file-export"></i> Generate Full Report
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">Developed by Yogesh Waradkar</footer>
+
+    <!-- Alert Container -->
+    <div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+
+    <script>
+      /* ===== API BASE: localhost -> backend:8000; production (Vercel) -> set your Render URL below ===== */
+      const API_BASE = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+        ? "http://127.0.0.1:8000"
+        : "https://YOUR-RENDER-SERVICE-NAME.onrender.com";
+
+      /* ===== CLAUSES BY AUDIT TYPE ===== */
+      const CLAUSE_TITLES = {
+        "4.1": "Context of the Organization",
+        "4.2": "Understanding Needs of Interested Parties",
+        "4.3": "Scope of the QMS",
+        "4.4": "Quality Management System",
+        "5.1": "Leadership and Commitment",
+        "5.2": "Quality Policy",
+        "6.1": "Risks and Opportunities",
+        "7.1": "Resources",
+        "8.1": "Operational Planning and Control",
+        "9.1": "Performance Evaluation",
+        "10.1": "Improvement",
+      };
+
+      // Stage 1: documentation/readiness (subset). Stage 2 & Surveillance: full.
+      const AUDIT_CLAUSE_MAP = {
+        "Stage 1": ["4.1", "4.2", "4.3", "4.4", "5.1", "5.2", "6.1", "7.1"],
+        "Stage 2": ["4.1", "4.2", "4.3", "4.4", "5.1", "5.2", "6.1", "7.1", "8.1", "9.1", "10.1"],
+        "Surveillance": ["4.1", "4.2", "4.3", "4.4", "5.1", "5.2", "6.1", "7.1", "8.1", "9.1", "10.1"],
+      };
+
+      const container = document.getElementById("clauses");
+
+      function getCurrentClauseIds() {
+        const auditType = document.getElementById("audit_type").value;
+        return AUDIT_CLAUSE_MAP[auditType] || AUDIT_CLAUSE_MAP["Stage 2"];
+      }
+
+      function renderClause4_1() {
+        return `
+    <div class="accordion-item" data-clause-id="4.1">
+        <button class="accordion-header" onclick="toggle(this)">
+            <span>Clause 4.1 - ${CLAUSE_TITLES["4.1"]}</span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+        </button>
+        <div class="accordion-content">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="4.1_internal_issues"><i class="fas fa-search"></i> Internal Issues Identified?</label>
+                <select id="4.1_internal_issues">
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="4.1_external_issues"><i class="fas fa-globe"></i> External Issues Identified?</label>
+                <select id="4.1_external_issues">
+                  <option value="yes">Yes</option>
+                  <option value="partial">Partial</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="4.1_monitoring_review"><i class="fas fa-chart-bar"></i> Monitoring &amp; Review Established?</label>
+                <select id="4.1_monitoring_review">
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="4.1_evidence"><i class="fas fa-clipboard"></i> Auditor Evidence</label>
+              <textarea id="4.1_evidence" placeholder="Enter site-specific observations and evidence..."></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="4.1_documents"><i class="fas fa-file-alt"></i> Documents</label>
+                <textarea id="4.1_documents" placeholder="Reference to documentation..."></textarea>
+              </div>
+              <div class="form-group">
+                <label for="4.1_findings"><i class="fas fa-exclamation-triangle"></i> Findings / NCs</label>
+                <textarea id="4.1_findings" placeholder="Non-conformities or observations..."></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="4.1_status"><i class="fas fa-flag"></i> Status</label>
+              <select id="4.1_status">
+                <option value="Compliant">Compliant</option>
+                <option value="Minor NC">Minor NC</option>
+                <option value="Major NC">Major NC</option>
+                <option value="Not Applicable">Not Applicable</option>
+              </select>
+            </div>
+        </div>
+    </div>`;
+      }
+
+      function renderSimpleClause(id, title) {
+        return `
+    <div class="accordion-item" data-clause-id="${id}">
+        <button class="accordion-header" onclick="toggle(this)">
+            <span>Clause ${id} - ${title}</span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+        </button>
+        <div class="accordion-content">
+            <div class="form-group">
+              <label for="${id}_evidence"><i class="fas fa-clipboard"></i> Auditor Evidence</label>
+              <textarea id="${id}_evidence"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="${id}_documents"><i class="fas fa-file-alt"></i> Documents</label>
+              <textarea id="${id}_documents"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="${id}_findings"><i class="fas fa-exclamation-triangle"></i> Findings / NCs</label>
+              <textarea id="${id}_findings"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="${id}_status"><i class="fas fa-flag"></i> Status</label>
+              <select id="${id}_status">
+                <option value="Compliant">Compliant</option>
+                <option value="Minor NC">Minor NC</option>
+                <option value="Major NC">Major NC</option>
+                <option value="Not Applicable">Not Applicable</option>
+              </select>
+            </div>
+        </div>
+    </div>`;
+      }
+
+      function renderClauses(auditType) {
+        const clauseIds = AUDIT_CLAUSE_MAP[auditType] || AUDIT_CLAUSE_MAP["Stage 2"];
+        let html = "";
+        clauseIds.forEach((id) => {
+          if (id === "4.1") html += renderClause4_1();
+          else html += renderSimpleClause(id, CLAUSE_TITLES[id] || id);
+        });
+        container.innerHTML = html;
+        updateCompletion();
+      }
+
+      // Initial render and audit type change
+      document.addEventListener("DOMContentLoaded", () => {
+        renderClauses(document.getElementById("audit_type").value);
+        document.getElementById("audit_type").addEventListener("change", function () {
+          renderClauses(this.value);
+        });
+      });
+
+      /* ===== UI HELPERS ===== */
+      function toggle(element) {
+        const content = element.nextElementSibling;
+        const isActive = content.classList.contains('active');
+        
+        // Close all other accordions
+        document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('active'));
+        
+        // Toggle current accordion
+        if (!isActive) {
+          content.classList.add('active');
+          element.classList.add('active');
+        }
+      }
+
+      function expandAll() {
+        document.querySelectorAll('.accordion-content').forEach(content => {
+          content.classList.add('active');
+        });
+        document.querySelectorAll('.accordion-header').forEach(header => {
+          header.classList.add('active');
+        });
+      }
+
+      function collapseAll() {
+        document.querySelectorAll('.accordion-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        document.querySelectorAll('.accordion-header').forEach(header => {
+          header.classList.remove('active');
+        });
+      }
+
+      function showAlert(message, type = 'success') {
+        const alertContainer = document.getElementById('alertContainer');
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type}`;
+        alert.innerHTML = `
+          <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+          <span>${message}</span>
+        `;
+        
+        alertContainer.appendChild(alert);
+        
+        setTimeout(() => {
+          alert.remove();
+        }, 5000);
+      }
+
+      /* ===== PROGRESS INDICATOR ===== */
+      function updateCompletion() {
+        const items = document.querySelectorAll(".accordion-item");
+        let completed = 0;
+
+        items.forEach((item) => {
+          const evidence = item.querySelector("textarea");
+          const status = item.querySelector("select");
+
+          if (
+            (evidence && evidence.value.trim() !== "") ||
+            (status && status.value !== "Compliant")
+          ) {
+            item.classList.add("completed");
+            completed++;
+          } else {
+            item.classList.remove("completed");
+          }
+        });
+
+        const total = items.length;
+        const percent = Math.round((completed / total) * 100);
+
+        document.getElementById(
+          "progressText"
+        ).innerText = `${completed} / ${total} clauses completed`;
+
+        document.getElementById("progressBar").style.width = percent + "%";
+      }
+
+      document.addEventListener("input", updateCompletion);
+      document.addEventListener("change", updateCompletion);
+
+      /* ===== DATA HANDLING ===== */
+      function collectPayload() {
+        const clauseIds = getCurrentClauseIds();
+        const clauses = {};
+
+        clauseIds.forEach((id) => {
+          if (id === "4.1") {
+            const el = (x) => document.getElementById(x);
+            clauses["4.1"] = {
+              answers: {
+                internal_issues: el("4.1_internal_issues")?.value ?? "yes",
+                external_issues: el("4.1_external_issues")?.value ?? "yes",
+                monitoring_review: el("4.1_monitoring_review")?.value ?? "yes",
+              },
+              auditor_evidence: el("4.1_evidence")?.value ?? "",
+              documents: el("4.1_documents")?.value ?? "",
+              findings: el("4.1_findings")?.value ?? "",
+              status: el("4.1_status")?.value ?? "Compliant",
+            };
+          } else {
+            const el = (x) => document.getElementById(x);
+            clauses[id] = {
+              answers: {},
+              auditor_evidence: el(`${id}_evidence`)?.value ?? "",
+              documents: el(`${id}_documents`)?.value ?? "",
+              findings: el(`${id}_findings`)?.value ?? "",
+              status: el(`${id}_status`)?.value ?? "Compliant",
+            };
+          }
+        });
+
+        return {
+          client_name: document.getElementById("client_name").value,
+          audit_type: document.getElementById("audit_type").value,
+          clauses: clauses,
+        };
+      }
+
+      function saveDraft() {
+        localStorage.setItem("iso9001_draft", JSON.stringify(collectPayload()));
+        showAlert('Draft saved successfully!', 'success');
+      }
+
+      function loadDraft() {
+        let data;
+        try {
+          const raw = localStorage.getItem("iso9001_draft");
+          if (raw == null) {
+            showAlert('No draft found', 'error');
+            return;
+          }
+          data = JSON.parse(raw);
+        } catch (e) {
+          showAlert('Invalid draft data. Could not load.', 'error');
+          return;
+        }
+        if (!data || !data.clauses) {
+          showAlert('No draft found', 'error');
+          return;
+        }
+
+        document.getElementById("client_name").value = data.client_name || "";
+        const auditType = data.audit_type || "Stage 2";
+        document.getElementById("audit_type").value = auditType;
+        renderClauses(auditType);
+
+        Object.keys(data.clauses).forEach((c) => {
+          const cl = data.clauses[c];
+          Object.keys(cl.answers || {}).forEach((a) => {
+            const el = document.getElementById(`${c}_${a}`);
+            if (el) el.value = cl.answers[a];
+          });
+          const evidenceValue = cl.auditor_evidence ?? cl.auditorEvidence ?? cl.evidence ?? "";
+          const evidenceEl = document.getElementById(`${c}_evidence`);
+          if (evidenceEl) evidenceEl.value = evidenceValue;
+          ["documents", "findings", "status"].forEach((f) => {
+            const el = document.getElementById(`${c}_${f}`);
+            if (el) el.value = cl[f] ?? "";
+          });
+        });
+
+        updateCompletion();
+        showAlert('Draft loaded successfully!', 'success');
+      }
+
+      function generateReport() {
+        const button = event.target;
+        const originalContent = button.innerHTML;
+
+        button.innerHTML = '<i class="fas fa-spinner loading"></i> Generating Report...';
+        button.disabled = true;
+
+        const payload = collectPayload();
+        console.log("Sending payload:", payload);
+
+        fetch(API_BASE + "/generate-report", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const filename = response.headers.get("X-Generated-Filename") || "audit_report.docx";
+            return response.blob().then((blob) => ({ blob, filename }));
+          })
+          .then(({ blob, filename }) => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showAlert("Report downloaded: " + filename, "success");
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            showAlert("Error generating report: " + error.message, "error");
+          })
+          .finally(() => {
+            button.innerHTML = originalContent;
+            button.disabled = false;
+          });
+      }
+    </script>
+  </body>
+</html>
