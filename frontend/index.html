@@ -114,6 +114,50 @@
         color: var(--gray-700);
       }
 
+      /* Standard switcher: ISO 9001 | ISO 13485 */
+      .standard-switcher {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .std-btn {
+        font-family: inherit;
+        font-size: clamp(0.9rem, 1.5vw, 1rem);
+        font-weight: 600;
+        padding: 0.6rem 1.25rem;
+        border-radius: 9999px;
+        border: 2px solid var(--gray-300);
+        background: #fff;
+        color: var(--gray-600);
+        cursor: pointer;
+        transition: all var(--transition);
+        min-height: var(--touch-min);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .std-btn:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        background: var(--primary-light);
+      }
+
+      .std-btn.active {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #fff;
+      }
+
+      .std-btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+      }
+
       .container {
         max-width: var(--container-max);
         margin: 0 auto;
@@ -302,6 +346,92 @@
         margin-bottom: 1.5rem;
       }
 
+      /* Fixed bottom controls bar — slick, compact, always visible */
+      .bottom-controls-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        padding: 0.5rem 0.75rem;
+        padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-top: 1px solid rgba(37, 99, 235, 0.12);
+        box-shadow: 0 -4px 24px rgba(15, 23, 42, 0.12);
+      }
+
+      .bottom-controls-bar .ctrl-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.4rem 0.65rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+        font-family: inherit;
+        border: none;
+        border-radius: 9999px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        color: var(--gray-700);
+        background: var(--gray-100);
+      }
+
+      .bottom-controls-bar .ctrl-btn:hover {
+        background: var(--gray-200);
+        transform: translateY(-1px);
+      }
+
+      .bottom-controls-bar .ctrl-btn.ctrl-save {
+        background: rgba(22, 163, 74, 0.15);
+        color: var(--success);
+      }
+      .bottom-controls-bar .ctrl-btn.ctrl-save:hover {
+        background: rgba(22, 163, 74, 0.25);
+      }
+
+      .bottom-controls-bar .ctrl-btn.ctrl-load {
+        background: rgba(107, 114, 128, 0.2);
+        color: var(--gray-700);
+      }
+      .bottom-controls-bar .ctrl-btn.ctrl-load:hover {
+        background: rgba(107, 114, 128, 0.3);
+      }
+
+      .bottom-controls-bar .ctrl-btn.ctrl-clear {
+        background: rgba(220, 38, 38, 0.1);
+        color: var(--danger);
+      }
+      .bottom-controls-bar .ctrl-btn.ctrl-clear:hover {
+        background: rgba(220, 38, 38, 0.2);
+      }
+
+      .bottom-controls-bar .ctrl-btn.ctrl-generate {
+        background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+        color: #fff;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        box-shadow: 0 2px 12px rgba(37, 99, 235, 0.4);
+      }
+      .bottom-controls-bar .ctrl-btn.ctrl-generate:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.5);
+      }
+
+      .bottom-controls-bar .ctrl-btn i {
+        font-size: 0.75rem;
+        opacity: 0.95;
+      }
+
+      /* Space so content isn't hidden behind fixed bar */
+      body { padding-bottom: 4.5rem; }
+
       .accordion {
         border: 1px solid var(--gray-200);
         border-radius: var(--radius);
@@ -397,6 +527,18 @@
         gap: 1rem;
       }
 
+      /* Clause content: stacked by default (mobile), two-column on web */
+      .clause-fields {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        margin-top: 1rem;
+      }
+
+      .clause-field-full {
+        grid-column: 1;
+      }
+
       .alert {
         padding: 1rem;
         border-radius: 0.5rem;
@@ -445,13 +587,56 @@
         margin-right: auto;
       }
 
+      /* Web view: balanced padding + two-column clause textareas */
+      @media (min-width: 769px) {
+        .container {
+          padding: 1.25rem;
+        }
+
+        .card {
+          padding: 1.25rem;
+        }
+
+        .accordion-content {
+          padding: 1.25rem;
+        }
+
+        .accordion-header {
+          padding: 1rem 1.25rem;
+        }
+
+        .clause-fields {
+          grid-template-columns: 1fr 1fr;
+          gap: 1.25rem;
+        }
+
+        .clause-field-full {
+          grid-column: 1 / -1;
+        }
+
+        .clause-fields .form-group {
+          margin-bottom: 0;
+        }
+      }
+
       @media (max-width: 768px) {
         body {
           padding: 10px;
+          padding-bottom: 4rem;
         }
 
         .header h1 {
           font-size: 2rem;
+        }
+
+        .standard-switcher {
+          margin-top: 0.75rem;
+          gap: 0.4rem;
+        }
+
+        .std-btn {
+          padding: 0.55rem 1rem;
+          font-size: 0.9rem;
         }
 
         .controls {
@@ -470,14 +655,59 @@
         .clause-grid {
           grid-template-columns: 1fr;
         }
+
+        /* Mobile: more space for clause textareas by reducing padding */
+        .container {
+          padding: 0.5rem;
+        }
+
+        .card {
+          padding: 0.75rem;
+        }
+
+        .accordion-header {
+          padding: 0.75rem 0.75rem;
+        }
+
+        .accordion-content {
+          padding: 0.75rem;
+        }
+
+        .accordion-content .form-group {
+          margin-bottom: 1rem;
+        }
+
+        .accordion-content textarea {
+          padding: 0.6rem 0.65rem;
+          min-height: 100px;
+        }
+
+        /* Bottom bar: wrap and stay compact on small screens */
+        .bottom-controls-bar {
+          flex-wrap: wrap;
+          justify-content: center;
+          padding: 0.4rem 0.5rem;
+          padding-bottom: max(0.4rem, env(safe-area-inset-bottom));
+        }
+        .bottom-controls-bar .ctrl-btn {
+          padding: 0.35rem 0.5rem;
+          font-size: 0.75rem;
+        }
+        .bottom-controls-bar .ctrl-btn.ctrl-generate {
+          padding: 0.4rem 0.75rem;
+        }
       }
     </style>
   </head>
 
   <body>
     <div class="header">
-      <h1><i class="fas fa-clipboard-check"></i> ISO 9001 Audit Automation</h1>
-      <p>Professional Audit Report Generator - Streamline Your Compliance Process</p>
+      <h1 id="mainTitle"><i class="fas fa-clipboard-check"></i> ISO 9001 Audit Automation</h1>
+      <p id="mainSubtitle">Professional Audit Report Generator - Streamline Your Compliance Process</p>
+      <div class="standard-switcher" role="tablist" aria-label="Select audit standard">
+        <button type="button" class="std-btn active" data-std="iso9001" role="tab" aria-selected="true" id="tab-iso9001">ISO 9001</button>
+        <button type="button" class="std-btn" data-std="iso13485" role="tab" aria-selected="false" id="tab-iso13485">ISO 13485</button>
+      </div>
     </div>
 
     <div class="container">
@@ -519,55 +749,45 @@
         </div>
       </div>
 
-      <!-- Controls Card -->
-      <div class="card">
-        <div class="card-header">
-          <i class="fas fa-cogs"></i>
-          <h3 class="card-title">Controls</h3>
-        </div>
-        <div class="controls">
-          <button class="btn btn-outline" onclick="expandAll()">
-            <i class="fas fa-expand-alt"></i> Expand All
-          </button>
-          <button class="btn btn-outline" onclick="collapseAll()">
-            <i class="fas fa-compress-alt"></i> Collapse All
-          </button>
-          <button class="btn btn-success" onclick="saveDraft()">
-            <i class="fas fa-save"></i> Save Draft
-          </button>
-          <button class="btn btn-secondary" onclick="loadDraft()">
-            <i class="fas fa-folder-open"></i> Load Draft
-          </button>
-          <button class="btn btn-outline" onclick="clearData()" style="color: var(--danger); border-color: var(--danger);">
-            <i class="fas fa-eraser"></i> Clear Data
-          </button>
-        </div>
-      </div>
-
       <!-- ISO Clauses -->
       <div class="card">
         <div class="card-header">
           <i class="fas fa-list-check"></i>
-          <h3 class="card-title">ISO 9001 Clauses</h3>
+          <h3 class="card-title" id="clausesCardTitle">ISO 9001 Clauses</h3>
         </div>
         <div class="accordion" id="clauses">
         <!-- Clauses rendered by JS based on audit type -->
-      </div>
-
-      <!-- Generate Report Button -->
-      <div class="card">
-        <div class="form-group">
-          <button
-            id="generateReportBtn"
-            class="btn btn-primary"
-            onclick="generateReport(event)"
-            style="width: 100%; justify-content: center; font-size: 1rem; padding: 1rem;"
-          >
-            <i class="fas fa-file-export"></i> Generate Full Report
-          </button>
         </div>
       </div>
     </div>
+
+    <!-- Fixed bottom controls bar -->
+    <nav class="bottom-controls-bar" aria-label="Audit controls">
+      <button type="button" class="ctrl-btn" onclick="expandAll()" title="Expand all clauses">
+        <i class="fas fa-expand-alt"></i><span>Expand</span>
+      </button>
+      <button type="button" class="ctrl-btn" onclick="collapseAll()" title="Collapse all clauses">
+        <i class="fas fa-compress-alt"></i><span>Collapse</span>
+      </button>
+      <button type="button" class="ctrl-btn ctrl-save" onclick="saveDraft()" title="Save draft">
+        <i class="fas fa-save"></i><span>Save</span>
+      </button>
+      <button type="button" class="ctrl-btn ctrl-load" onclick="loadDraft()" title="Load draft">
+        <i class="fas fa-folder-open"></i><span>Load</span>
+      </button>
+      <button type="button" class="ctrl-btn ctrl-clear" onclick="clearData()" title="Clear data">
+        <i class="fas fa-eraser"></i><span>Clear</span>
+      </button>
+      <button
+        type="button"
+        id="generateReportBtn"
+        class="ctrl-btn ctrl-generate"
+        onclick="generateReport(event)"
+        title="Generate full audit report"
+      >
+        <i class="fas fa-file-export"></i><span>Generate Report</span>
+      </button>
+    </nav>
 
     <footer class="footer">Developed by Yogesh Waradkar</footer>
 
@@ -643,11 +863,51 @@
         "Surveillance": ["4.1", "4.2", "4.3", "4.4", "5.1", "5.2", "5.3", "6.1", "6.2", "6.3", "7.1", "7.1.2", "7.1.3", "7.1.4", "7.1.5", "7.1.6", "7.2", "7.3", "7.4", "7.5", "8.1", "8.2", "8.2.1", "8.2.2", "8.2.3", "8.2.4", "8.3", "8.3.2", "8.3.3", "8.3.4", "8.3.5", "8.3.6", "8.4", "8.4.2", "8.4.3", "8.5", "8.5.1", "8.5.2", "8.5.3", "8.5.4", "8.5.5", "8.5.6", "8.6", "8.7", "9.1", "9.1.2", "9.1.3", "9.2", "9.3", "10.1", "10.2", "10.3"],
       };
 
+      /* ===== ISO 13485:2016 (Medical devices QMS) ===== */
+      const CLAUSE_TITLES_13485 = {
+        "4.1": "General quality management system requirements",
+        "4.2": "Documentation requirements",
+        "5.1": "Management commitment",
+        "5.2": "Customer focus",
+        "5.3": "Quality policy",
+        "5.4": "Planning (objectives and QMS planning)",
+        "5.5": "Responsibility, authority and communication",
+        "5.6": "Management review",
+        "6.1": "Provision of resources",
+        "6.2": "Human resources",
+        "6.3": "Infrastructure",
+        "6.4": "Work environment and contamination control",
+        "7.1": "Planning of product realization",
+        "7.2": "Customer-related processes",
+        "7.3": "Design and development",
+        "7.4": "Purchasing",
+        "7.5": "Production and service provision",
+        "7.6": "Control of monitoring and measuring equipment",
+        "8.1": "General (measurement and improvement)",
+        "8.2": "Monitoring and measurement (feedback, complaints, internal audit)",
+        "8.3": "Control of nonconforming product",
+        "8.4": "Analysis of data",
+        "8.5": "Improvement (corrective and preventive action)",
+      };
+
+      const AUDIT_CLAUSE_MAP_13485 = {
+        "Stage 1": ["4.1", "4.2", "5.1", "5.2", "5.3", "5.4", "5.5", "5.6", "6.1", "6.2", "6.3", "6.4", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "8.1", "8.2", "8.3", "8.4", "8.5"],
+        "Stage 2": ["4.1", "4.2", "5.1", "5.2", "5.3", "5.4", "5.5", "5.6", "6.1", "6.2", "6.3", "6.4", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "8.1", "8.2", "8.3", "8.4", "8.5"],
+        "Certification": ["4.1", "4.2", "5.1", "5.2", "5.3", "5.4", "5.5", "5.6", "6.1", "6.2", "6.3", "6.4", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "8.1", "8.2", "8.3", "8.4", "8.5"],
+      };
+
       const container = document.getElementById("clauses");
+
+      let currentStandard = "iso9001";
+
+      function getClauseMapForStandard() {
+        return currentStandard === "iso13485" ? AUDIT_CLAUSE_MAP_13485 : AUDIT_CLAUSE_MAP;
+      }
 
       function getCurrentClauseIds() {
         const auditType = document.getElementById("audit_type").value;
-        return AUDIT_CLAUSE_MAP[auditType] || AUDIT_CLAUSE_MAP["Stage 2"];
+        const map = getClauseMapForStandard();
+        return map[auditType] || map["Stage 2"] || map["Stage 1"];
       }
 
       function renderClause4_1() {
@@ -682,28 +942,28 @@
                 </select>
               </div>
             </div>
-            <div class="form-group">
-              <label for="4.1_evidence"><i class="fas fa-clipboard"></i> Auditor Evidence</label>
-              <textarea id="4.1_evidence" placeholder="Enter site-specific observations and evidence..."></textarea>
-            </div>
-            <div class="form-row">
+            <div class="clause-fields">
+              <div class="form-group">
+                <label for="4.1_evidence"><i class="fas fa-clipboard"></i> Auditor Evidence</label>
+                <textarea id="4.1_evidence" placeholder="Enter site-specific observations and evidence..."></textarea>
+              </div>
               <div class="form-group">
                 <label for="4.1_documents"><i class="fas fa-file-alt"></i> Documents</label>
                 <textarea id="4.1_documents" placeholder="Reference to documentation..."></textarea>
               </div>
-              <div class="form-group">
+              <div class="form-group clause-field-full">
                 <label for="4.1_findings"><i class="fas fa-exclamation-triangle"></i> Findings / NCs</label>
                 <textarea id="4.1_findings" placeholder="Non-conformities or observations..."></textarea>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="4.1_status"><i class="fas fa-flag"></i> Status</label>
-              <select id="4.1_status">
-                <option value="Compliant">Compliant</option>
-                <option value="Minor NC">Minor NC</option>
-                <option value="Major NC">Major NC</option>
-                <option value="Not Applicable">Not Applicable</option>
-              </select>
+              <div class="form-group clause-field-full">
+                <label for="4.1_status"><i class="fas fa-flag"></i> Status</label>
+                <select id="4.1_status">
+                  <option value="Compliant">Compliant</option>
+                  <option value="Minor NC">Minor NC</option>
+                  <option value="Major NC">Major NC</option>
+                  <option value="Not Applicable">Not Applicable</option>
+                </select>
+              </div>
             </div>
         </div>
     </div>`;
@@ -717,37 +977,45 @@
             <i class="fas fa-chevron-down accordion-icon"></i>
         </button>
         <div class="accordion-content">
-            <div class="form-group">
-              <label for="${id}_evidence"><i class="fas fa-clipboard"></i> Auditor Evidence</label>
-              <textarea id="${id}_evidence"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="${id}_documents"><i class="fas fa-file-alt"></i> Documents</label>
-              <textarea id="${id}_documents"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="${id}_findings"><i class="fas fa-exclamation-triangle"></i> Findings / NCs</label>
-              <textarea id="${id}_findings"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="${id}_status"><i class="fas fa-flag"></i> Status</label>
-              <select id="${id}_status">
-                <option value="Compliant">Compliant</option>
-                <option value="Minor NC">Minor NC</option>
-                <option value="Major NC">Major NC</option>
-                <option value="Not Applicable">Not Applicable</option>
-              </select>
+            <div class="clause-fields">
+              <div class="form-group">
+                <label for="${id}_evidence"><i class="fas fa-clipboard"></i> Auditor Evidence</label>
+                <textarea id="${id}_evidence"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="${id}_documents"><i class="fas fa-file-alt"></i> Documents</label>
+                <textarea id="${id}_documents"></textarea>
+              </div>
+              <div class="form-group clause-field-full">
+                <label for="${id}_findings"><i class="fas fa-exclamation-triangle"></i> Findings / NCs</label>
+                <textarea id="${id}_findings"></textarea>
+              </div>
+              <div class="form-group clause-field-full">
+                <label for="${id}_status"><i class="fas fa-flag"></i> Status</label>
+                <select id="${id}_status">
+                  <option value="Compliant">Compliant</option>
+                  <option value="Minor NC">Minor NC</option>
+                  <option value="Major NC">Major NC</option>
+                  <option value="Not Applicable">Not Applicable</option>
+                </select>
+              </div>
             </div>
         </div>
     </div>`;
       }
 
+      function getClauseTitlesForStandard() {
+        return currentStandard === "iso13485" ? CLAUSE_TITLES_13485 : CLAUSE_TITLES;
+      }
+
       function renderClauses(auditType) {
-        const clauseIds = AUDIT_CLAUSE_MAP[auditType] || AUDIT_CLAUSE_MAP["Stage 2"];
+        const map = getClauseMapForStandard();
+        const titles = getClauseTitlesForStandard();
+        const clauseIds = map[auditType] || map["Stage 2"] || map["Stage 1"];
         let html = "";
         clauseIds.forEach((id) => {
-          if (id === "4.1") html += renderClause4_1();
-          else html += renderSimpleClause(id, CLAUSE_TITLES[id] || id);
+          if (currentStandard === "iso9001" && id === "4.1") html += renderClause4_1();
+          else html += renderSimpleClause(id, titles[id] || id);
         });
         container.innerHTML = html;
         updateCompletion();
@@ -756,11 +1024,87 @@
       // Track current audit type so we can save the right draft when switching
       let currentAuditType = "Stage 1";
 
+      const LAST_STANDARD_KEY = "iso_audit_last_standard";
+
+      function setAuditTypeOptionsForStandard() {
+        const sel = document.getElementById("audit_type");
+        const is13485 = currentStandard === "iso13485";
+        const options = is13485
+          ? [ { value: "Stage 1", text: "Stage 1" }, { value: "Stage 2", text: "Stage 2" }, { value: "Certification", text: "Certification" } ]
+          : [ { value: "Stage 1", text: "Stage 1" }, { value: "Stage 2", text: "Stage 2" }, { value: "Surveillance", text: "Surveillance" } ];
+        const currentVal = sel.value;
+        sel.innerHTML = options.map((o) => "<option value=\"" + o.value + "\">" + o.text + "</option>").join("");
+        const valid = options.some((o) => o.value === currentVal);
+        sel.value = valid ? currentVal : options[0].value;
+      }
+
+      function updateHeaderForStandard() {
+        const is13485 = currentStandard === "iso13485";
+        document.getElementById("mainTitle").innerHTML = is13485
+          ? "<i class=\"fas fa-clipboard-check\"></i> ISO 13485 Audit Automation"
+          : "<i class=\"fas fa-clipboard-check\"></i> ISO 9001 Audit Automation";
+        document.getElementById("mainSubtitle").textContent = is13485
+          ? "Medical Devices QMS - Professional Audit Report Generator"
+          : "Professional Audit Report Generator - Streamline Your Compliance Process";
+        document.getElementById("clausesCardTitle").textContent = is13485 ? "ISO 13485 Clauses" : "ISO 9001 Clauses";
+        document.title = is13485 ? "ISO 13485 Audit Automation | Medical Devices QMS" : "ISO 9001 Audit Automation | Professional Audit Report Generator";
+      }
+
+      function switchStandard(std) {
+        if (std === currentStandard) return;
+        const payload = collectPayload();
+        payload.audit_type = currentAuditType;
+        try {
+          localStorage.setItem(draftKey(currentAuditType), JSON.stringify(payload));
+          localStorage.setItem(lastAuditTypeKey(), currentAuditType);
+        } catch (e) { }
+        currentStandard = std;
+        try { localStorage.setItem(LAST_STANDARD_KEY, currentStandard); } catch (e) { }
+        document.querySelectorAll(".standard-switcher .std-btn").forEach((btn) => {
+          const active = btn.getAttribute("data-std") === currentStandard;
+          btn.classList.toggle("active", active);
+          btn.setAttribute("aria-selected", active ? "true" : "false");
+        });
+        updateHeaderForStandard();
+        setAuditTypeOptionsForStandard();
+        const lastTypeForNew = localStorage.getItem(lastAuditTypeKey()) || "Stage 1";
+        const sel = document.getElementById("audit_type");
+        if (Array.from(sel.options).some((o) => o.value === lastTypeForNew)) sel.value = lastTypeForNew;
+        currentAuditType = sel.value;
+        const saved = localStorage.getItem(draftKey(currentAuditType));
+        if (saved) {
+          try {
+            const data = JSON.parse(saved);
+            if (data && data.clauses) {
+              applyDraftData(data, false);
+              updateCompletion();
+              return;
+            }
+          } catch (e) { }
+        }
+        const clientName = document.getElementById("client_name").value;
+        renderClauses(currentAuditType);
+        document.getElementById("client_name").value = clientName;
+        updateCompletion();
+      }
+
       // Initial render, restore draft on refresh (per audit type), and audit type change
       document.addEventListener("DOMContentLoaded", () => {
-        const lastType = localStorage.getItem(LAST_AUDIT_TYPE_KEY) || "Stage 1";
+        const lastStd = localStorage.getItem(LAST_STANDARD_KEY) || "iso9001";
+        currentStandard = lastStd;
+        document.querySelectorAll(".standard-switcher .std-btn").forEach((btn) => {
+          const active = btn.getAttribute("data-std") === currentStandard;
+          btn.classList.toggle("active", active);
+          btn.setAttribute("aria-selected", active ? "true" : "false");
+        });
+        updateHeaderForStandard();
+        setAuditTypeOptionsForStandard();
+        const lastType = localStorage.getItem(lastAuditTypeKey()) || "Stage 1";
         currentAuditType = lastType;
-        const saved = localStorage.getItem(draftKey(lastType));
+        const sel = document.getElementById("audit_type");
+        if (Array.from(sel.options).some((o) => o.value === lastType)) sel.value = lastType;
+        else currentAuditType = sel.value;
+        const saved = localStorage.getItem(draftKey(currentAuditType));
         if (saved) {
           try {
             const data = JSON.parse(saved);
@@ -768,17 +1112,18 @@
               applyDraftData(data, false);
               updateCompletion();
             } else {
-              document.getElementById("audit_type").value = lastType;
-              renderClauses(lastType);
+              renderClauses(currentAuditType);
             }
           } catch (e) {
-            document.getElementById("audit_type").value = lastType;
-            renderClauses(lastType);
+            renderClauses(currentAuditType);
           }
         } else {
-          document.getElementById("audit_type").value = lastType;
-          renderClauses(lastType);
+          renderClauses(currentAuditType);
         }
+        document.querySelector(".standard-switcher").addEventListener("click", (e) => {
+          const btn = e.target.closest(".std-btn[data-std]");
+          if (btn) switchStandard(btn.getAttribute("data-std"));
+        });
         document.getElementById("audit_type").addEventListener("change", function () {
           const newType = this.value;
           if (currentAuditType === newType) return;
@@ -786,7 +1131,7 @@
           payload.audit_type = currentAuditType;
           try {
             localStorage.setItem(draftKey(currentAuditType), JSON.stringify(payload));
-            localStorage.setItem(LAST_AUDIT_TYPE_KEY, newType);
+            localStorage.setItem(lastAuditTypeKey(), newType);
           } catch (e) { }
           currentAuditType = newType;
           const draftForNew = localStorage.getItem(draftKey(newType));
@@ -891,11 +1236,19 @@
       document.addEventListener("change", updateCompletion);
 
       /* ===== DATA HANDLING ===== */
-      const DRAFT_KEY_PREFIX = "iso9001_draft_";
-      const LAST_AUDIT_TYPE_KEY = "iso9001_last_audit_type";
+      const DRAFT_KEY_PREFIX_9001 = "iso9001_draft_";
+      const DRAFT_KEY_PREFIX_13485 = "iso13485_draft_";
+      const LAST_AUDIT_TYPE_KEY_9001 = "iso9001_last_audit_type";
+      const LAST_AUDIT_TYPE_KEY_13485 = "iso13485_last_audit_type";
 
       function draftKey(auditType) {
-        return DRAFT_KEY_PREFIX + (auditType || document.getElementById("audit_type").value);
+        const t = auditType || document.getElementById("audit_type").value;
+        const prefix = currentStandard === "iso13485" ? DRAFT_KEY_PREFIX_13485 : DRAFT_KEY_PREFIX_9001;
+        return prefix + t;
+      }
+
+      function lastAuditTypeKey() {
+        return currentStandard === "iso13485" ? LAST_AUDIT_TYPE_KEY_13485 : LAST_AUDIT_TYPE_KEY_9001;
       }
 
       function collectPayload() {
@@ -929,6 +1282,7 @@
         });
 
         return {
+          standard: currentStandard,
           client_name: document.getElementById("client_name").value,
           audit_type: document.getElementById("audit_type").value,
           clauses: clauses,
@@ -940,7 +1294,7 @@
           const payload = collectPayload();
           const key = draftKey(payload.audit_type);
           localStorage.setItem(key, JSON.stringify(payload));
-          localStorage.setItem(LAST_AUDIT_TYPE_KEY, payload.audit_type);
+          localStorage.setItem(lastAuditTypeKey(), payload.audit_type);
           if (!silent) showAlert('Draft saved successfully!', 'success');
         } catch (e) {
           if (!silent) showAlert('Could not save draft (storage may be full).', 'error');
@@ -1037,10 +1391,18 @@
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
             }
-            const filename = response.headers.get("X-Generated-Filename") || "audit_report.docx";
-            return response.blob().then((blob) => ({ blob, filename }));
+            const backendFilename = response.headers.get("X-Generated-Filename");
+            return response.blob().then((blob) => ({ blob, backendFilename }));
           })
-          .then(({ blob, filename }) => {
+          .then(({ blob, backendFilename }) => {
+            const safeStandard = currentStandard === "iso13485" ? "ISO13485" : "ISO9001";
+            const safeClient = (payload.client_name || "Client").replace(/\s+/g, "_");
+            const safeAudit = (payload.audit_type || "Audit").replace(/\s+/g, "_");
+            const ts = new Date().toISOString().replace(/[-:T]/g, "").slice(0, 14);
+            const filenameWithStandard = `${safeClient}_${safeAudit}_${safeStandard}_${ts}.docx`;
+            const filename = backendFilename && (backendFilename.includes("ISO9001") || backendFilename.includes("ISO13485"))
+              ? backendFilename
+              : filenameWithStandard;
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
