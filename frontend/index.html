@@ -753,9 +753,14 @@
         updateCompletion();
       }
 
-      // Initial render, restore draft on refresh, and audit type change
+      // Track current audit type so we can save the right draft when switching
+      let currentAuditType = "Stage 1";
+
+      // Initial render, restore draft on refresh (per audit type), and audit type change
       document.addEventListener("DOMContentLoaded", () => {
-        const saved = localStorage.getItem("iso9001_draft");
+        const lastType = localStorage.getItem(LAST_AUDIT_TYPE_KEY) || "Stage 1";
+        currentAuditType = lastType;
+        const saved = localStorage.getItem(draftKey(lastType));
         if (saved) {
           try {
             const data = JSON.parse(saved);
@@ -763,16 +768,42 @@
               applyDraftData(data, false);
               updateCompletion();
             } else {
-              renderClauses(document.getElementById("audit_type").value);
+              document.getElementById("audit_type").value = lastType;
+              renderClauses(lastType);
             }
           } catch (e) {
-            renderClauses(document.getElementById("audit_type").value);
+            document.getElementById("audit_type").value = lastType;
+            renderClauses(lastType);
           }
         } else {
-          renderClauses(document.getElementById("audit_type").value);
+          document.getElementById("audit_type").value = lastType;
+          renderClauses(lastType);
         }
         document.getElementById("audit_type").addEventListener("change", function () {
-          renderClauses(this.value);
+          const newType = this.value;
+          if (currentAuditType === newType) return;
+          var payload = collectPayload();
+          payload.audit_type = currentAuditType;
+          try {
+            localStorage.setItem(draftKey(currentAuditType), JSON.stringify(payload));
+            localStorage.setItem(LAST_AUDIT_TYPE_KEY, newType);
+          } catch (e) { }
+          currentAuditType = newType;
+          const draftForNew = localStorage.getItem(draftKey(newType));
+          if (draftForNew) {
+            try {
+              const data = JSON.parse(draftForNew);
+              if (data && data.clauses) {
+                applyDraftData(data, false);
+                updateCompletion();
+                return;
+              }
+            } catch (e) { }
+          }
+          const clientName = document.getElementById("client_name").value;
+          renderClauses(newType);
+          document.getElementById("client_name").value = clientName;
+          updateCompletion();
         });
       });
 
@@ -860,6 +891,13 @@
       document.addEventListener("change", updateCompletion);
 
       /* ===== DATA HANDLING ===== */
+      const DRAFT_KEY_PREFIX = "iso9001_draft_";
+      const LAST_AUDIT_TYPE_KEY = "iso9001_last_audit_type";
+
+      function draftKey(auditType) {
+        return DRAFT_KEY_PREFIX + (auditType || document.getElementById("audit_type").value);
+      }
+
       function collectPayload() {
         const clauseIds = getCurrentClauseIds();
         const clauses = {};
@@ -899,7 +937,10 @@
 
       function saveDraft(silent) {
         try {
-          localStorage.setItem("iso9001_draft", JSON.stringify(collectPayload()));
+          const payload = collectPayload();
+          const key = draftKey(payload.audit_type);
+          localStorage.setItem(key, JSON.stringify(payload));
+          localStorage.setItem(LAST_AUDIT_TYPE_KEY, payload.audit_type);
           if (!silent) showAlert('Draft saved successfully!', 'success');
         } catch (e) {
           if (!silent) showAlert('Could not save draft (storage may be full).', 'error');
@@ -911,6 +952,7 @@
         document.getElementById("client_name").value = data.client_name || "";
         const auditType = data.audit_type || "Stage 1";
         document.getElementById("audit_type").value = auditType;
+        currentAuditType = auditType;
         renderClauses(auditType);
 
         Object.keys(data.clauses).forEach((c) => {
@@ -932,14 +974,15 @@
 
       function loadDraft() {
         try {
-          const raw = localStorage.getItem("iso9001_draft");
+          const currentType = document.getElementById("audit_type").value;
+          const raw = localStorage.getItem(draftKey(currentType));
           if (raw == null) {
-            showAlert('No draft found', 'error');
+            showAlert('No draft found for ' + currentType, 'error');
             return;
           }
           const data = JSON.parse(raw);
           if (!data || !data.clauses) {
-            showAlert('No draft found', 'error');
+            showAlert('No draft found for ' + currentType, 'error');
             return;
           }
           applyDraftData(data, true);
@@ -950,12 +993,14 @@
       }
 
       function clearData() {
-        localStorage.removeItem("iso9001_draft");
-        document.getElementById("client_name").value = "Demo Client";
-        document.getElementById("audit_type").value = "Stage 1";
-        renderClauses("Stage 1");
+        const currentType = document.getElementById("audit_type").value;
+        localStorage.removeItem(draftKey(currentType));
+        const clientName = document.getElementById("client_name").value;
+        document.getElementById("audit_type").value = currentType;
+        renderClauses(currentType);
+        document.getElementById("client_name").value = clientName;
         updateCompletion();
-        showAlert('Data cleared.', 'success');
+        showAlert('Data cleared for ' + currentType + '.', 'success');
       }
 
       // Auto-save to localStorage so data survives refresh (debounced)
