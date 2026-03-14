@@ -1,0 +1,10 @@
+# Render Blueprint: backend only (frontend on Vercel)
+# Git push to connected repo triggers auto-deploy.
+services:
+  - type: web
+    name: iso9001-backend
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    envVars: []

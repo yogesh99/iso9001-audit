@@ -1,5 +1,5 @@
 from docx import Document
-from services.summary_engine import generate_report_summary
+from backend.services.summary_engine import generate_report_summary
 from docx.shared import Pt
 from docx.oxml import OxmlElement
 from docx.text.paragraph import Paragraph
@@ -22,7 +22,6 @@ def clear_cell(cell):
 
 SECTION_HEADINGS = [
     "Evidences and comments on conformance:",
-    "Auditor Evidence (site specific observations):",
     "References to documentation:",
     "Findings/NCs:"
 ]
