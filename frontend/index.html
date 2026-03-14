@@ -346,6 +346,92 @@
         margin-bottom: 1.5rem;
       }
 
+      /* Fixed bottom controls bar — slick, compact, always visible */
+      .bottom-controls-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        padding: 0.5rem 0.75rem;
+        padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-top: 1px solid rgba(37, 99, 235, 0.12);
+        box-shadow: 0 -4px 24px rgba(15, 23, 42, 0.12);
+      }
+
+      .bottom-controls-bar .ctrl-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.4rem 0.65rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+        font-family: inherit;
+        border: none;
+        border-radius: 9999px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        color: var(--gray-700);
+        background: var(--gray-100);
+      }
+
+      .bottom-controls-bar .ctrl-btn:hover {
+        background: var(--gray-200);
+        transform: translateY(-1px);
+      }
+
+      .bottom-controls-bar .ctrl-btn.ctrl-save {
+        background: rgba(22, 163, 74, 0.15);
+        color: var(--success);
+      }
+      .bottom-controls-bar .ctrl-btn.ctrl-save:hover {
+        background: rgba(22, 163, 74, 0.25);
+      }
+
+      .bottom-controls-bar .ctrl-btn.ctrl-load {
+        background: rgba(107, 114, 128, 0.2);
+        color: var(--gray-700);
+      }
+      .bottom-controls-bar .ctrl-btn.ctrl-load:hover {
+        background: rgba(107, 114, 128, 0.3);
+      }
+
+      .bottom-controls-bar .ctrl-btn.ctrl-clear {
+        background: rgba(220, 38, 38, 0.1);
+        color: var(--danger);
+      }
+      .bottom-controls-bar .ctrl-btn.ctrl-clear:hover {
+        background: rgba(220, 38, 38, 0.2);
+      }
+
+      .bottom-controls-bar .ctrl-btn.ctrl-generate {
+        background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+        color: #fff;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        box-shadow: 0 2px 12px rgba(37, 99, 235, 0.4);
+      }
+      .bottom-controls-bar .ctrl-btn.ctrl-generate:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.5);
+      }
+
+      .bottom-controls-bar .ctrl-btn i {
+        font-size: 0.75rem;
+        opacity: 0.95;
+      }
+
+      /* Space so content isn't hidden behind fixed bar */
+      body { padding-bottom: 4.5rem; }
+
       .accordion {
         border: 1px solid var(--gray-200);
         border-radius: var(--radius);
@@ -441,6 +527,18 @@
         gap: 1rem;
       }
 
+      /* Clause content: stacked by default (mobile), two-column on web */
+      .clause-fields {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        margin-top: 1rem;
+      }
+
+      .clause-field-full {
+        grid-column: 1;
+      }
+
       .alert {
         padding: 1rem;
         border-radius: 0.5rem;
@@ -489,9 +587,42 @@
         margin-right: auto;
       }
 
+      /* Web view: balanced padding + two-column clause textareas */
+      @media (min-width: 769px) {
+        .container {
+          padding: 1.25rem;
+        }
+
+        .card {
+          padding: 1.25rem;
+        }
+
+        .accordion-content {
+          padding: 1.25rem;
+        }
+
+        .accordion-header {
+          padding: 1rem 1.25rem;
+        }
+
+        .clause-fields {
+          grid-template-columns: 1fr 1fr;
+          gap: 1.25rem;
+        }
+
+        .clause-field-full {
+          grid-column: 1 / -1;
+        }
+
+        .clause-fields .form-group {
+          margin-bottom: 0;
+        }
+      }
+
       @media (max-width: 768px) {
         body {
           padding: 10px;
+          padding-bottom: 4rem;
         }
 
         .header h1 {
@@ -550,6 +681,21 @@
           padding: 0.6rem 0.65rem;
           min-height: 100px;
         }
+
+        /* Bottom bar: wrap and stay compact on small screens */
+        .bottom-controls-bar {
+          flex-wrap: wrap;
+          justify-content: center;
+          padding: 0.4rem 0.5rem;
+          padding-bottom: max(0.4rem, env(safe-area-inset-bottom));
+        }
+        .bottom-controls-bar .ctrl-btn {
+          padding: 0.35rem 0.5rem;
+          font-size: 0.75rem;
+        }
+        .bottom-controls-bar .ctrl-btn.ctrl-generate {
+          padding: 0.4rem 0.75rem;
+        }
       }
     </style>
   </head>
@@ -603,31 +749,6 @@
         </div>
       </div>
 
-      <!-- Controls Card -->
-      <div class="card">
-        <div class="card-header">
-          <i class="fas fa-cogs"></i>
-          <h3 class="card-title">Controls</h3>
-        </div>
-        <div class="controls">
-          <button class="btn btn-outline" onclick="expandAll()">
-            <i class="fas fa-expand-alt"></i> Expand All
-          </button>
-          <button class="btn btn-outline" onclick="collapseAll()">
-            <i class="fas fa-compress-alt"></i> Collapse All
-          </button>
-          <button class="btn btn-success" onclick="saveDraft()">
-            <i class="fas fa-save"></i> Save Draft
-          </button>
-          <button class="btn btn-secondary" onclick="loadDraft()">
-            <i class="fas fa-folder-open"></i> Load Draft
-          </button>
-          <button class="btn btn-outline" onclick="clearData()" style="color: var(--danger); border-color: var(--danger);">
-            <i class="fas fa-eraser"></i> Clear Data
-          </button>
-        </div>
-      </div>
-
       <!-- ISO Clauses -->
       <div class="card">
         <div class="card-header">
@@ -636,22 +757,37 @@
         </div>
         <div class="accordion" id="clauses">
         <!-- Clauses rendered by JS based on audit type -->
-      </div>
-
-      <!-- Generate Report Button -->
-      <div class="card">
-        <div class="form-group">
-          <button
-            id="generateReportBtn"
-            class="btn btn-primary"
-            onclick="generateReport(event)"
-            style="width: 100%; justify-content: center; font-size: 1rem; padding: 1rem;"
-          >
-            <i class="fas fa-file-export"></i> Generate Full Report
-          </button>
         </div>
       </div>
     </div>
+
+    <!-- Fixed bottom controls bar -->
+    <nav class="bottom-controls-bar" aria-label="Audit controls">
+      <button type="button" class="ctrl-btn" onclick="expandAll()" title="Expand all clauses">
+        <i class="fas fa-expand-alt"></i><span>Expand</span>
+      </button>
+      <button type="button" class="ctrl-btn" onclick="collapseAll()" title="Collapse all clauses">
+        <i class="fas fa-compress-alt"></i><span>Collapse</span>
+      </button>
+      <button type="button" class="ctrl-btn ctrl-save" onclick="saveDraft()" title="Save draft">
+        <i class="fas fa-save"></i><span>Save</span>
+      </button>
+      <button type="button" class="ctrl-btn ctrl-load" onclick="loadDraft()" title="Load draft">
+        <i class="fas fa-folder-open"></i><span>Load</span>
+      </button>
+      <button type="button" class="ctrl-btn ctrl-clear" onclick="clearData()" title="Clear data">
+        <i class="fas fa-eraser"></i><span>Clear</span>
+      </button>
+      <button
+        type="button"
+        id="generateReportBtn"
+        class="ctrl-btn ctrl-generate"
+        onclick="generateReport(event)"
+        title="Generate full audit report"
+      >
+        <i class="fas fa-file-export"></i><span>Generate Report</span>
+      </button>
+    </nav>
 
     <footer class="footer">Developed by Yogesh Waradkar</footer>
 
@@ -806,28 +942,28 @@
                 </select>
               </div>
             </div>
-            <div class="form-group">
-              <label for="4.1_evidence"><i class="fas fa-clipboard"></i> Auditor Evidence</label>
-              <textarea id="4.1_evidence" placeholder="Enter site-specific observations and evidence..."></textarea>
-            </div>
-            <div class="form-row">
+            <div class="clause-fields">
+              <div class="form-group">
+                <label for="4.1_evidence"><i class="fas fa-clipboard"></i> Auditor Evidence</label>
+                <textarea id="4.1_evidence" placeholder="Enter site-specific observations and evidence..."></textarea>
+              </div>
               <div class="form-group">
                 <label for="4.1_documents"><i class="fas fa-file-alt"></i> Documents</label>
                 <textarea id="4.1_documents" placeholder="Reference to documentation..."></textarea>
               </div>
-              <div class="form-group">
+              <div class="form-group clause-field-full">
                 <label for="4.1_findings"><i class="fas fa-exclamation-triangle"></i> Findings / NCs</label>
                 <textarea id="4.1_findings" placeholder="Non-conformities or observations..."></textarea>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="4.1_status"><i class="fas fa-flag"></i> Status</label>
-              <select id="4.1_status">
-                <option value="Compliant">Compliant</option>
-                <option value="Minor NC">Minor NC</option>
-                <option value="Major NC">Major NC</option>
-                <option value="Not Applicable">Not Applicable</option>
-              </select>
+              <div class="form-group clause-field-full">
+                <label for="4.1_status"><i class="fas fa-flag"></i> Status</label>
+                <select id="4.1_status">
+                  <option value="Compliant">Compliant</option>
+                  <option value="Minor NC">Minor NC</option>
+                  <option value="Major NC">Major NC</option>
+                  <option value="Not Applicable">Not Applicable</option>
+                </select>
+              </div>
             </div>
         </div>
     </div>`;
@@ -841,26 +977,28 @@
             <i class="fas fa-chevron-down accordion-icon"></i>
         </button>
         <div class="accordion-content">
-            <div class="form-group">
-              <label for="${id}_evidence"><i class="fas fa-clipboard"></i> Auditor Evidence</label>
-              <textarea id="${id}_evidence"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="${id}_documents"><i class="fas fa-file-alt"></i> Documents</label>
-              <textarea id="${id}_documents"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="${id}_findings"><i class="fas fa-exclamation-triangle"></i> Findings / NCs</label>
-              <textarea id="${id}_findings"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="${id}_status"><i class="fas fa-flag"></i> Status</label>
-              <select id="${id}_status">
-                <option value="Compliant">Compliant</option>
-                <option value="Minor NC">Minor NC</option>
-                <option value="Major NC">Major NC</option>
-                <option value="Not Applicable">Not Applicable</option>
-              </select>
+            <div class="clause-fields">
+              <div class="form-group">
+                <label for="${id}_evidence"><i class="fas fa-clipboard"></i> Auditor Evidence</label>
+                <textarea id="${id}_evidence"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="${id}_documents"><i class="fas fa-file-alt"></i> Documents</label>
+                <textarea id="${id}_documents"></textarea>
+              </div>
+              <div class="form-group clause-field-full">
+                <label for="${id}_findings"><i class="fas fa-exclamation-triangle"></i> Findings / NCs</label>
+                <textarea id="${id}_findings"></textarea>
+              </div>
+              <div class="form-group clause-field-full">
+                <label for="${id}_status"><i class="fas fa-flag"></i> Status</label>
+                <select id="${id}_status">
+                  <option value="Compliant">Compliant</option>
+                  <option value="Minor NC">Minor NC</option>
+                  <option value="Major NC">Major NC</option>
+                  <option value="Not Applicable">Not Applicable</option>
+                </select>
+              </div>
             </div>
         </div>
     </div>`;
