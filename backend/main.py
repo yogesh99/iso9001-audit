@@ -6,8 +6,6 @@ from fastapi.responses import FileResponse
 
 # Ensure imports work when running `uvicorn backend.main:app` from project root
 from backend.services.word_generator import generate_report
-from backend.services.narrative_engine import generate_narrative
-from backend.services.iso_loader import ISO9001_RULES
 
 app = FastAPI()
 
@@ -43,23 +41,8 @@ def generate(audit_data: dict):
         # ---------------------------
         for clause_id, data in audit_data.get("clauses", {}).items():
 
-            clause_rules = ISO9001_RULES.get(clause_id)
-
             # ---------------------------
-            # System-generated narrative (if rules exist)
-            # ---------------------------
-            answers = data.get("answers", {})
-            if clause_rules:
-                system_narrative = generate_narrative(
-                    clause_rules,
-                    answers
-                )
-            else:
-                # No configured rules for this clause – still include auditor evidence
-                system_narrative = ""
-
-            # ---------------------------
-            # Auditor Evidence (VERY IMPORTANT)
+            # Auditor Evidence
             # ---------------------------
             auditor_evidence = (
                 data.get("auditor_evidence")
@@ -70,13 +53,8 @@ def generate(audit_data: dict):
             # ---------------------------
             # Combine evidence correctly
             # ---------------------------
-            # If the auditor has entered their own evidence, prefer ONLY that text
-            # (the template already adds the "Evidences and comments on conformance:" heading).
-            if auditor_evidence:
-                evidence_text = auditor_evidence
-            else:
-                # Fall back to the system-generated narrative when no auditor text is provided.
-                evidence_text = system_narrative
+            # Use only the auditor's evidence. No default/system narrative in the report.
+            evidence_text = auditor_evidence
 
             # ---------------------------
             # Final clause payload

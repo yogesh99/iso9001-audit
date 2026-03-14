@@ -495,8 +495,8 @@
           <div class="form-group">
             <label for="audit_type"><i class="fas fa-tasks"></i> Audit Type</label>
             <select id="audit_type">
-              <option value="Stage 1">Stage 1</option>
-              <option value="Stage 2" selected>Stage 2</option>
+              <option value="Stage 1" selected>Stage 1</option>
+              <option value="Stage 2">Stage 2</option>
               <option value="Surveillance">Surveillance</option>
             </select>
           </div>
@@ -537,6 +537,9 @@
           </button>
           <button class="btn btn-secondary" onclick="loadDraft()">
             <i class="fas fa-folder-open"></i> Load Draft
+          </button>
+          <button class="btn btn-outline" onclick="clearData()" style="color: var(--danger); border-color: var(--danger);">
+            <i class="fas fa-eraser"></i> Clear Data
           </button>
         </div>
       </div>
@@ -750,9 +753,24 @@
         updateCompletion();
       }
 
-      // Initial render and audit type change
+      // Initial render, restore draft on refresh, and audit type change
       document.addEventListener("DOMContentLoaded", () => {
-        renderClauses(document.getElementById("audit_type").value);
+        const saved = localStorage.getItem("iso9001_draft");
+        if (saved) {
+          try {
+            const data = JSON.parse(saved);
+            if (data && data.clauses) {
+              applyDraftData(data, false);
+              updateCompletion();
+            } else {
+              renderClauses(document.getElementById("audit_type").value);
+            }
+          } catch (e) {
+            renderClauses(document.getElementById("audit_type").value);
+          }
+        } else {
+          renderClauses(document.getElementById("audit_type").value);
+        }
         document.getElementById("audit_type").addEventListener("change", function () {
           renderClauses(this.value);
         });
@@ -879,31 +897,19 @@
         };
       }
 
-      function saveDraft() {
-        localStorage.setItem("iso9001_draft", JSON.stringify(collectPayload()));
-        showAlert('Draft saved successfully!', 'success');
+      function saveDraft(silent) {
+        try {
+          localStorage.setItem("iso9001_draft", JSON.stringify(collectPayload()));
+          if (!silent) showAlert('Draft saved successfully!', 'success');
+        } catch (e) {
+          if (!silent) showAlert('Could not save draft (storage may be full).', 'error');
+        }
       }
 
-      function loadDraft() {
-        let data;
-        try {
-          const raw = localStorage.getItem("iso9001_draft");
-          if (raw == null) {
-            showAlert('No draft found', 'error');
-            return;
-          }
-          data = JSON.parse(raw);
-        } catch (e) {
-          showAlert('Invalid draft data. Could not load.', 'error');
-          return;
-        }
-        if (!data || !data.clauses) {
-          showAlert('No draft found', 'error');
-          return;
-        }
-
+      function applyDraftData(data, showMessage) {
+        if (!data || !data.clauses) return;
         document.getElementById("client_name").value = data.client_name || "";
-        const auditType = data.audit_type || "Stage 2";
+        const auditType = data.audit_type || "Stage 1";
         document.getElementById("audit_type").value = auditType;
         renderClauses(auditType);
 
@@ -921,10 +927,45 @@
             if (el) el.value = cl[f] ?? "";
           });
         });
-
-        updateCompletion();
-        showAlert('Draft loaded successfully!', 'success');
+        if (showMessage) showAlert('Draft loaded successfully!', 'success');
       }
+
+      function loadDraft() {
+        try {
+          const raw = localStorage.getItem("iso9001_draft");
+          if (raw == null) {
+            showAlert('No draft found', 'error');
+            return;
+          }
+          const data = JSON.parse(raw);
+          if (!data || !data.clauses) {
+            showAlert('No draft found', 'error');
+            return;
+          }
+          applyDraftData(data, true);
+          updateCompletion();
+        } catch (e) {
+          showAlert('Invalid draft data. Could not load.', 'error');
+        }
+      }
+
+      function clearData() {
+        localStorage.removeItem("iso9001_draft");
+        document.getElementById("client_name").value = "Demo Client";
+        document.getElementById("audit_type").value = "Stage 1";
+        renderClauses("Stage 1");
+        updateCompletion();
+        showAlert('Data cleared.', 'success');
+      }
+
+      // Auto-save to localStorage so data survives refresh (debounced)
+      let autoSaveTimeout;
+      function scheduleAutoSave() {
+        clearTimeout(autoSaveTimeout);
+        autoSaveTimeout = setTimeout(() => saveDraft(true), 500);
+      }
+      document.addEventListener("input", scheduleAutoSave);
+      document.addEventListener("change", scheduleAutoSave);
 
       function generateReport(ev) {
         // Be robust: prefer the button element even if the icon/text is clicked,

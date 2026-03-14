@@ -26,6 +26,17 @@ SECTION_HEADINGS = [
     "Findings/NCs:"
 ]
 
+# Heading to remove: its content is merged under "Evidences and comments on conformance:"
+AUDITOR_EVIDENCE_HEADING = "Auditor Evidence (site specific observations):"
+
+# Default/system narrative lines to never include in the report (auditor-only content)
+DEFAULT_NARRATIVE_LINES = {
+    "The organization has identified internal issues relevant to its purpose and strategic direction.",
+    "External issues relevant to the organization have been identified.",
+    "A documented mechanism is established to monitor and review these issues.",
+    "The organization has identified internal issues relevant to its purpose and strategic direction. External issues relevant to the organization have been identified. A documented mechanism is established to monitor and review these issues.",
+}
+
 def add_heading_paragraph(cell, text, template_para):
     p = cell.add_paragraph()
     run = p.add_run(text)
@@ -113,6 +124,14 @@ def fill_clause_in_tables(doc, clause_id, clause_data):
                 for line in clause_data["evidence"].split("\n"):
                     line = line.strip()
                     if not line:
+                        continue
+                    # Omit this title; its content stays under "Evidences and comments on conformance:"
+                    if line == AUDITOR_EVIDENCE_HEADING:
+                        continue
+                    # Never output default/system narrative in the report
+                    if line in DEFAULT_NARRATIVE_LINES or any(
+                        default in line for default in DEFAULT_NARRATIVE_LINES
+                    ):
                         continue
 
                     if line in SECTION_HEADINGS:
