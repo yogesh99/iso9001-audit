@@ -98,6 +98,23 @@ def insert_paragraph_before(paragraph):
     return Paragraph(new_p, paragraph._parent)
 
 
+def insert_standard_at_start(doc, standard_name: str):
+    """
+    Insert a visible 'Audit Standard: ISO 9001' (or ISO 13485) line at the very
+    start of the document so it shows in every downloaded report.
+    """
+    body = doc.element.body
+    if len(body) == 0:
+        return
+    first = body[0]
+    new_p = OxmlElement("w:p")
+    first.addprevious(new_p)
+    para = Paragraph(new_p, body)
+    run = para.add_run(f"Audit Standard: {standard_name}")
+    run.bold = True
+    run.font.size = Pt(12)
+
+
 
 def fill_clause_in_tables(doc, clause_id, clause_data):
     for table in doc.tables:
@@ -183,25 +200,27 @@ def generate_report(audit_data):
         template_path = os.path.join(TEMPLATE_DIR, "stage2_template.docx")
     doc = Document(template_path)
 
+    standard = audit_data.get("standard", "iso9001")
+    standard_name = "ISO 13485" if standard == "iso13485" else "ISO 9001"
+    insert_standard_at_start(doc, standard_name)
+
     for clause_id, clause_data in audit_data["clauses"].items():
         fill_clause_in_tables(doc, clause_id, clause_data)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    
     client_name = audit_data.get("client_name", "Client")
     audit_type = audit_data.get("audit_type", "Audit")
-
     safe_client = client_name.replace(" ", "_")
     safe_audit = audit_type.replace(" ", "_")
+    safe_standard = "ISO13485" if standard == "iso13485" else "ISO9001"
 
     output_path = os.path.join(
         OUTPUT_DIR,
-        f"{safe_client}_{safe_audit}_{timestamp}.docx"
+        f"{safe_client}_{safe_audit}_{safe_standard}_{timestamp}.docx"
     )
-    
-    summary = generate_report_summary(audit_data["clauses"])
-    fill_report_summary(doc, summary)
 
+    summary = generate_report_summary(audit_data["clauses"])
+    fill_report_summary(doc, summary, standard_name=standard_name)
 
     doc.save(output_path)
     return output_path
@@ -209,7 +228,7 @@ def generate_report(audit_data):
 
 from docx.shared import Pt
 
-def fill_report_summary(doc, summary: dict):
+def fill_report_summary(doc, summary: dict, standard_name: str = "ISO 9001"):
     for table in doc.tables:
         for row in table.rows:
             for cell in row.cells:
@@ -240,6 +259,7 @@ def fill_report_summary(doc, summary: dict):
                         run.font.size = Pt(9)
 
                     # ---- Insert content ----
+                    add_summary_line(f"Standard: {standard_name}", bold=True)
                     add_summary_line("No nonconformities identified." if not summary["nc_clauses"]
                                      else "Clauses with nonconformities: " + ", ".join(summary["nc_clauses"]))
 

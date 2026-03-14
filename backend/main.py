@@ -70,6 +70,7 @@ def generate(audit_data: dict):
         # Final audit object
         # ---------------------------
         final_audit_data = {
+            "standard": audit_data.get("standard", "iso9001"),
             "client_name": audit_data.get("client_name", "Demo Client"),
             "audit_type": audit_data.get("audit_type", "Stage 2"),
             "clauses": clauses_payload
